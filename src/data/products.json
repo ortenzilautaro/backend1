@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "pid": 1,
+    "title": "Calabaza",
+    "description": "Una humilde Calabaza",
+    "code": "calabazinha",
+    "price": 2300,
+    "status": false,
+    "stock": 0,
+    "category": "Verduleria",
+    "thumbnails": "https://picsum.photos/100"
+  },
+  {
+    "pid": 3,
+    "title": "Papa",
+    "description": "Una humilde papa",
+    "code": "papinha",
+    "price": 200,
+    "status": true,
+    "stock": 15,
+    "category": "Verduleria",
+    "thumbnails": "https://picsum.photos/200"
+  }
+]

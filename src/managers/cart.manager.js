@@ -38,19 +38,37 @@ export default class CartManager {
         return carritoById.prod;
     }
 
-    async postProductoAlCarrito(cid, pid, quantity) {
-        await this.verificarArchivo();
-        const data = await fs.readFile(this.path, 'utf-8');
-        const carritos = JSON.parse(data);
-        const index = carritos.findIndex(x => x.cid === parseInt(cid));
+async postProductoAlCarrito(cid, pid, quantity) {
+    await this.verificarArchivo();
 
-        if (index === -1) return null;
+    const productData = await fs.readFile('./src/data/products.json', 'utf-8');
+    const productos = JSON.parse(productData);
+    const productoExiste = productos.some(p => p.pid === parseInt(pid));
+    if (!productoExiste) return { error: 'El producto no existe' };
 
-        carritos[index].prod.push({ product: pid, quantity: quantity});
+    const data = await fs.readFile(this.path, 'utf-8');
+    const carritos = JSON.parse(data);
+    const index = carritos.findIndex(x => x.cid === parseInt(cid));
 
-        await fs.writeFile(this.path, JSON.stringify(carritos, null, 2));
-        return carritos[index];
+    if (index === -1) return { error: 'El carrito no existe' };
+
+    const carrito = carritos[index];
+    const productoIndex = carrito.prod.findIndex(p => p.product === parseInt(pid));
+
+    if (productoIndex !== -1) {
+        carrito.prod[productoIndex].quantity += quantity;
+    } else {
+        carrito.prod.push({
+            product: parseInt(pid),
+            quantity: quantity
+        });
     }
+
+    await fs.writeFile(this.path, JSON.stringify(carritos, null, 2));
+    return carrito;
+}
+
+
 }
 
 class Carrito {
