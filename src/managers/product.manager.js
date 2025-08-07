@@ -5,6 +5,13 @@ export default class ProductManager {
         this.path = path;
     }
 
+    async getNextId() {
+    const productos = await this.getProductos();
+    if (productos.length === 0) return 1;
+    const ids = productos.map(p => p.pid);
+    return Math.max(...ids) + 1;
+}
+
     async verificarArchivo() {
         try {
             await fs.access(this.path);
@@ -23,33 +30,19 @@ export default class ProductManager {
         return productos.find((prod) => prod.pid === pid);
     }
     async postProductos({
-        pid,
-        title,
-        description,
-        code,
-        price,
-        status,
-        stock,
-        category,
-        thumbnails,
-    }) {
-        const productos = await this.getProductos();
-        const producto = new Producto(
-            pid,
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnails
-        );
-        productos.push(producto);
-        await fs.writeFile(this.path, JSON.stringify(productos, null, 2));
-        return producto;
-    }
-    async putId(
+    title,
+    description,
+    code,
+    price,
+    status,
+    stock,
+    category,
+    thumbnails,
+}) {
+    const productos = await this.getProductos();
+    const pid = await this.getNextId();
+
+    const producto = new Producto(
         pid,
         title,
         description,
@@ -59,33 +52,53 @@ export default class ProductManager {
         stock,
         category,
         thumbnails
-    ) {
-        const productos = await this.getProductos();
-        const index = productos.findIndex((prod) => prod.pid === pid);
+    );
 
-        if (index !== -1) {
-            productos[index] = {
-                pid,
-                title,
-                description,
-                code,
-                price,
-                status,
-                stock,
-                category,
-                thumbnails,
-            };
-            await fs.writeFile(this.path, JSON.stringify(productos, null, 2));
-            return productos[index];
-        } else {
-            console.log(`error`);
-        }
+    productos.push(producto);
+    await fs.writeFile(this.path, JSON.stringify(productos, null, 2));
+    return producto;
+}
+
+async putId(
+    pid,
+    title,
+    description,
+    code,
+    price,
+    status,
+    stock,
+    category,
+    thumbnails
+) {
+    const productos = await this.getProductos();
+    const index = productos.findIndex((prod) => prod.pid === parseInt(pid));
+
+    if (index === -1) {
+        throw new Error(`Producto con pid ${pid} no encontrado`);
     }
+
+    const productoActual = productos[index];
+    productos[index] = {
+        ...productoActual,
+        title: title ?? productoActual.title,
+        description: description ?? productoActual.description,
+        code: code ?? productoActual.code,
+        price: price ?? productoActual.price,
+        status: status ?? productoActual.status,
+        stock: stock ?? productoActual.stock,
+        category: category ?? productoActual.category,
+        thumbnails: thumbnails ?? productoActual.thumbnails,
+    };
+
+    await fs.writeFile(this.path, JSON.stringify(productos, null, 2));
+    return productos[index];
+}
 
     async delete(pid) {
         const productos = await this.getProductos();
-        const filtrados = productos.filter((prod) => prod.pid !== pid);
+        const filtrados = productos.filter((prod) => prod.pid !== parseInt(pid));
         await fs.writeFile(this.path, JSON.stringify(filtrados, null, 2));
+        return filtrados
     }
 }
 

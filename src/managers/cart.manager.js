@@ -33,7 +33,7 @@ export default class CartManager {
         await this.verificarArchivo();
         const data = await fs.readFile(this.path, 'utf-8');
         const carritos = JSON.parse(data);
-        const carritoById = carritos.find(x => x.cid === cid);
+        const carritoById = carritos.find(x => x.cid === parseInt(cid));
         if (!carritoById) return null;
         return carritoById.prod;
     }
@@ -42,7 +42,7 @@ export default class CartManager {
         await this.verificarArchivo();
         const data = await fs.readFile(this.path, 'utf-8');
         const carritos = JSON.parse(data);
-        const index = carritos.findIndex(x => x.cid === cid);
+        const index = carritos.findIndex(x => x.cid === parseInt(cid));
 
         if (index === -1) return null;
 
