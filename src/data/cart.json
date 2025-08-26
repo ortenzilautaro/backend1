@@ -12,12 +12,16 @@
       },
       {
         "product": 3,
-        "quantity": 6
+        "quantity": 8
       }
     ]
   },
   {
     "cid": 2,
+    "prod": []
+  },
+  {
+    "cid": 3,
     "prod": []
   }
 ]

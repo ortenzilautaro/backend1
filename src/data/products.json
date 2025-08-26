@@ -11,8 +11,46 @@
     "thumbnails": "https://picsum.photos/100"
   },
   {
-    "pid": 3,
+    "pid": 4,
     "title": "Papa",
+    "description": "Una humilde papa",
+    "code": "papinha",
+    "price": 200,
+    "status": true,
+    "stock": 15,
+    "category": "Verduleria",
+    "thumbnails": "https://picsum.photos/200"
+  },
+  {
+    "pid": 5,
+    "title": "Papa",
+    "description": "Una humilde papa",
+    "code": "papinha",
+    "price": 200,
+    "status": true,
+    "stock": 15,
+    "category": "Verduleria",
+    "thumbnails": "https://picsum.photos/200"
+  },
+  {
+    "pid": 6,
+    "title": "pepino",
+    "description": "Una humilde papa",
+    "code": "papinha",
+    "price": 200,
+    "status": true,
+    "stock": 15,
+    "category": "Verduleria",
+    "thumbnails": "https://picsum.photos/200"
+  },
+  {
+    "pid": 7,
+    "title": "cono",
+    "price": "200"
+  },
+  {
+    "pid": 8,
+    "title": "mandarina",
     "description": "Una humilde papa",
     "code": "papinha",
     "price": 200,

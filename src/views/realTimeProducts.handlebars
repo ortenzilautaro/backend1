@@ -1,0 +1,22 @@
+<h1>Productos en tiempo real</h1>
+<ul id="listaProductos">
+  {{#each productos}}
+    <li>{{pid}} - {{title}} - ${{price}}</li>
+  {{/each}}
+</ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // Escuchar actualizaciones de productos
+  socket.on("actualizarProductos", (productos) => {
+    const ul = document.getElementById("listaProductos");
+    ul.innerHTML = ""; // Limpiar lista
+    productos.forEach(p => {
+      const li = document.createElement("li");
+      li.textContent = `${p.pid} - ${p.title} - $${p.price}`;
+      ul.appendChild(li);
+    });
+  });
+</script>
